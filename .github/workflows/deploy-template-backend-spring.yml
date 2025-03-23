@@ -92,6 +92,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs: docker-build
+    steps:
+      - name: Simulate Deployment
+        run: echo "Simulation for Deployment"
     # if: ${{ secrets.ssh-host != '' }}
     # steps:
     #   - name: Deploy via SSH
