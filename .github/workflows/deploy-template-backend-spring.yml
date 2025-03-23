@@ -82,6 +82,12 @@ jobs:
         run: |
           mkdir -p build/libs
           mv *.jar build/libs/
+          
+      - name: Echo project name and Docker image tag
+        run: |
+          echo "Project Name: ${{ inputs.project-name }}"
+          echo "Docker Image Tag: ${{ inputs.docker-image-tag }}"
+          echo "Docker Username: ${{ secrets.docker-username }}"
 
       - name: Build Docker image
         run: docker build -t ${{ secrets.docker-username }}/${{ inputs.project-name }}:${{ inputs.docker-image-tag }} .
