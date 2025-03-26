@@ -104,7 +104,7 @@ jobs:
     needs: docker-build
     steps:
       - name: Deploy via SSH
-        if: ${{ secrets['ssh-host'] != '' }}
+#        if: ${{ secrets['ssh-host'] != '' }}
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets['ssh-host'] }}
