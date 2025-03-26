@@ -115,3 +115,4 @@ jobs:
             docker compose -f dat-service-redis.yml down
             docker pull ${{ secrets['docker-username'] }}/${{ inputs.project-name }}:${{ inputs.docker-image-tag }}
             docker compose -f dat-service-redis.yml up -d
+            docker image prune -f
