@@ -110,8 +110,8 @@ jobs:
           username: ${{ secrets['ssh-user'] }}
           key: ${{ secrets['ssh-key'] }}
           script: |
+            cd /opt/tss/docker-compose
             echo "${{ secrets['docker-password'] }}" | docker login -u "${{ secrets['docker-username'] }}" --password-stdin
+            docker compose -f dat-service-redis.yml down
             docker pull ${{ secrets['docker-username'] }}/${{ inputs.project-name }}:${{ inputs.docker-image-tag }}
-            docker stop ${{ inputs.project-name }} || true
-            docker rm ${{ inputs.project-name }} || true
-            docker run -d --name ${{ inputs.project-name }} -p ${{ inputs.external-port }}:8080 ${{ secrets['docker-username'] }}/${{ inputs.project-name }}:${{ inputs.docker-image-tag }}
+            docker compose -f dat-service-redis.yml up -d
