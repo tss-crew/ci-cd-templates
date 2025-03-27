@@ -1,4 +1,4 @@
-name: Spring CI-CD Template
+name: Spring CI-CD Template - Backend
 
 on:
   workflow_call:
