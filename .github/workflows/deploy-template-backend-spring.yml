@@ -112,7 +112,7 @@ jobs:
           script: |
             cd /opt/tss/docker-compose
             echo "${{ secrets['docker-password'] }}" | docker login -u "${{ secrets['docker-username'] }}" --password-stdin
-            docker compose -f dat-service-redis.yml down
+            docker compose -f ${{ inputs.project-name }}.yml down
             docker pull ${{ secrets['docker-username'] }}/${{ inputs.project-name }}:${{ inputs.docker-image-tag }}
-            docker compose -f dat-service-redis.yml up -d
+            docker compose -f ${{ inputs.project-name }}.yml up -d
             docker image prune -f
