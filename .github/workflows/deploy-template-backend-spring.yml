@@ -12,22 +12,6 @@ on:
       external-port:
         required: true
         type: number
-      use-redis:
-        required: false
-        type: boolean
-        default: false
-      use-keycloak:
-        required: false
-        type: boolean
-        default: false
-      use-token-db:
-        required: false
-        type: boolean
-        default: false
-      use-credentials-db:
-        required: false
-        type: boolean
-        default: false
 
     secrets:
       docker-username:
