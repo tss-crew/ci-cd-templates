@@ -62,7 +62,7 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Build (skip tests)
+      - name: Build (skip tests TODO Test removed temporary )
         run: ./gradlew build -x test --no-daemon  # TODO Test removed temporary
 
   docker-build:
