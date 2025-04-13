@@ -51,6 +51,61 @@ jobs:
   pre-deploy-test:
     runs-on: ubuntu-latest
     needs: build
+    services:
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+
+      token-db:
+        image: postgres:15
+        env:
+          POSTGRES_DB: token-test-db
+          POSTGRES_USER: token_user
+          POSTGRES_PASSWORD: token_pass
+        ports:
+          - 5432:5432
+
+      credentials-db:
+        image: postgres:15
+        env:
+          POSTGRES_DB: credentials-test-db
+          POSTGRES_USER: cred_user
+          POSTGRES_PASSWORD: cred_pass
+        ports:
+          - 5433:5432
+
+      keycloak-db:
+        image: postgres:15
+        env:
+          POSTGRES_DB: keycloak
+          POSTGRES_USER: keycloak
+          POSTGRES_PASSWORD: admin
+        ports:
+          - 5434:5432
+
+      keycloak:
+        image: quay.io/keycloak/keycloak:24.0.1
+        ports:
+          - 9050:9050
+        options: >-
+          --health-cmd="curl -f http://localhost:9050 || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+        env:
+          KC_DB: postgres
+          KC_DB_URL_HOST: localhost
+          KC_DB_URL_DATABASE: keycloak
+          KC_DB_USERNAME: keycloak
+          KC_DB_PASSWORD: admin
+          KC_HTTP_RELATIVE_PATH: /
+          KEYCLOAK_ADMIN: admin
+          KEYCLOAK_ADMIN_PASSWORD: admin
+          KC_PROXY: edge
+          KC_HOSTNAME_STRICT: false
+          KC_HOSTNAME_STRICT_HTTPS: false
+
     steps:
       - uses: actions/checkout@v4
 
