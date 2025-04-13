@@ -68,6 +68,7 @@ jobs:
           CLIENT_ID: dummy
           CLIENT_SECRET: dummy
           REDIRECT_URL: http://localhost/dummy
+          EUREKA_ENABLED: false
 
   docker-build:
     runs-on: ubuntu-latest
