@@ -74,19 +74,6 @@ jobs:
         ports:
           - 6379:6379
 
-      keycloak:
-        image: quay.io/keycloak/keycloak:24.0.1
-        ports:
-          - 9050:9050
-        env:
-          KEYCLOAK_ADMIN: admin
-          KEYCLOAK_ADMIN_PASSWORD: admin
-        options: >-
-          --health-cmd="curl -f http://localhost:9050 || exit 1"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=10
-
       token-db:
         image: postgres:15
         env:
