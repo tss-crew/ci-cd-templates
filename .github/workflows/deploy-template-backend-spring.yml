@@ -51,31 +51,6 @@ jobs:
   pre-deploy-test:
     runs-on: ubuntu-latest
     needs: build
-
-    services:
-      redis:
-        image: redis:7
-        ports:
-          - 6379:6379
-
-      token-db:
-        image: postgres:15
-        env:
-          POSTGRES_DB: keycloak
-          POSTGRES_USER: keycloak
-          POSTGRES_PASSWORD: admin
-        ports:
-          - 5432:5432
-
-      credentials-db:
-        image: postgres:15
-        env:
-          POSTGRES_DB: credentials
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: pass
-        ports:
-          - 5433:5432
-
     steps:
       - uses: actions/checkout@v4
 
@@ -87,18 +62,12 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Run tests
-        run: ./gradlew test --no-daemon
+      - name: Run tests with profile `test`
+        run: ./gradlew test --no-daemon -Dspring.profiles.active=test
         env:
-          REDIS_HOST: localhost
-          DB_HOST: localhost
-          DB_PORT: 5432
-          CREDENTIALS_DB_PORT: 5433
-          KEYCLOAK_URL: http://localhost:9050
-          CLIENT_ID: dummy-id
-          CLIENT_SECRET: dummy-secret
+          CLIENT_ID: dummy
+          CLIENT_SECRET: dummy
           REDIRECT_URL: http://localhost/dummy
-
 
   docker-build:
     runs-on: ubuntu-latest
