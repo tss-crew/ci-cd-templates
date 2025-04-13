@@ -111,6 +111,9 @@ jobs:
           DB_PORT: 5432
           CREDENTIALS_DB_PORT: 5433
           KEYCLOAK_URL: http://localhost:9050
+          CLIENT_ID: dummy-id
+          CLIENT_SECRET: dummy-secret
+          REDIRECT_URL: http://localhost/dummy
 
 
   docker-build:
