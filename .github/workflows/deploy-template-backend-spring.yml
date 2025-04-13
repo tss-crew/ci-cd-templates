@@ -62,13 +62,13 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Run tests with profile `test`
+      - name: Run tests
         run: ./gradlew test --no-daemon -Dspring.profiles.active=test
         env:
+          EUREKA_ENABLED: false
           CLIENT_ID: dummy
           CLIENT_SECRET: dummy
-          REDIRECT_URL: http://localhost/dummy
-          EUREKA_ENABLED: false
+          REDIRECT_URL: http://localhost
 
   docker-build:
     runs-on: ubuntu-latest
