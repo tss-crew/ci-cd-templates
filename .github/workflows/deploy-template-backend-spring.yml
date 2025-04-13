@@ -12,6 +12,22 @@ on:
       external-port:
         required: true
         type: number
+      use-redis:
+        required: false
+        type: boolean
+        default: false
+      use-keycloak:
+        required: false
+        type: boolean
+        default: false
+      use-token-db:
+        required: false
+        type: boolean
+        default: false
+      use-credentials-db:
+        required: false
+        type: boolean
+        default: false
 
     secrets:
       docker-username:
@@ -51,6 +67,44 @@ jobs:
   pre-deploy-test:
     runs-on: ubuntu-latest
     needs: build
+
+    services:
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+
+      keycloak:
+        image: quay.io/keycloak/keycloak:24.0.1
+        ports:
+          - 9050:9050
+        env:
+          KEYCLOAK_ADMIN: admin
+          KEYCLOAK_ADMIN_PASSWORD: admin
+        options: >-
+          --health-cmd="curl -f http://localhost:9050 || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+      token-db:
+        image: postgres:15
+        env:
+          POSTGRES_DB: keycloak
+          POSTGRES_USER: keycloak
+          POSTGRES_PASSWORD: admin
+        ports:
+          - 5432:5432
+
+      credentials-db:
+        image: postgres:15
+        env:
+          POSTGRES_DB: credentials
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+        ports:
+          - 5433:5432
+
     steps:
       - uses: actions/checkout@v4
 
@@ -64,6 +118,13 @@ jobs:
 
       - name: Run tests
         run: ./gradlew test --no-daemon
+        env:
+          REDIS_HOST: localhost
+          DB_HOST: localhost
+          DB_PORT: 5432
+          CREDENTIALS_DB_PORT: 5433
+          KEYCLOAK_URL: http://localhost:9050
+
 
   docker-build:
     runs-on: ubuntu-latest
