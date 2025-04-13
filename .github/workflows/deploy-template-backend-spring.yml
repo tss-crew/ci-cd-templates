@@ -114,5 +114,5 @@ jobs:
             echo "${{ secrets['docker-password'] }}" | docker login -u "${{ secrets['docker-username'] }}" --password-stdin
             docker compose -f ${{ inputs.project-name }}.yml down
             docker pull ${{ secrets['docker-username'] }}/${{ inputs.project-name }}:${{ inputs.docker-image-tag }}
-            docker compose -f ${{ inputs.project-name }}.yml up -d
+            docker compose -f ${{ inputs.project-name }}-compose.yml up -d
             docker image prune -f
