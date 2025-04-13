@@ -110,7 +110,7 @@ jobs:
           username: ${{ secrets['ssh-user'] }}
           key: ${{ secrets['ssh-key'] }}
           script: |
-            cd /opt/tss/docker-compose
+            cd /opt/tss/deploy
             echo "${{ secrets['docker-password'] }}" | docker login -u "${{ secrets['docker-username'] }}" --password-stdin
             docker compose -f ${{ inputs.project-name }}.yml down
             docker pull ${{ secrets['docker-username'] }}/${{ inputs.project-name }}:${{ inputs.docker-image-tag }}
